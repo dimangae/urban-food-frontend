@@ -7,24 +7,39 @@ export default function DeletePayments() {
     const [searchResult, setSearchResult] = useState(null);
 
     // Handle searching for a payment by ID
-    const handleSearch = () => {
-        const payment = payments.find((payment) => payment.paymentId === searchTerm);
-        if (payment) {
-            setSearchResult(payment);
-        } else {
-            alert('Payment not found');
+    const handleSearch = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/payments/`+searchTerm);
+            if (!response.ok) {
+                throw new Error('Payment not found');
+            }
+            const data = await response.json();
+            console.log(data);
+            setSearchResult(data);
+        } catch (error) {
+            alert(error.message);
             setSearchResult(null);
         }
     };
 
+
+
     // Handle deleting the searched payment
-    const handleDelete = () => {
-        if (searchResult) {
-            const updatedPayments = payments.filter((payment) => payment.paymentId !== searchResult.paymentId);
-            setPayments(updatedPayments);
+    const handleDelete = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/payments/`+searchResult.id, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Delete failed');
+            }
+
             alert('Payment deleted successfully');
             setSearchResult(null);
             setSearchTerm('');
+        } catch (error) {
+            alert(error.message);
         }
     };
 
@@ -96,10 +111,11 @@ export default function DeletePayments() {
                                 marginBottom: '20px',
                             }}
                         >
-                            <strong>ID: {searchResult.paymentId}</strong><br />
+                            <strong>ID: {searchResult.id}</strong><br />
                             <strong>Method: {searchResult.paymentMethod}</strong><br />
                             Amount: {searchResult.amount}<br />
-                            Date: {searchResult.paymentDate}
+                            Date: {searchResult.paymentDate}<br />
+                            Order ID: {searchResult.orderId}
                         </Box>
                     )}
                     {searchResult && (

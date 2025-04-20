@@ -2,38 +2,33 @@ import React, { useState, useEffect } from 'react';
 import { Container, Paper, Box, TextField, Button, List, ListItem } from '@mui/material';
 
 export default function ViewCarts() {
+    const [cartId, setCartId] = useState('');
+    const [customerId, setCustomerId] = useState('');
+    const [totalItem, setTotalItem] = useState('');
+    const [totalPrice, setTotalPrice] = useState('');
     const [carts, setCarts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [editingIndex, setEditingIndex] = useState(null);
     const [filteredCarts, setFilteredCarts] = useState([]);
-
-    // Fetch carts from a database
-    useEffect(() => {
-        const fetchCarts = async () => {
-            try {
-                // Replace with your actual API endpoint
-                const response = await fetch('https://api.example.com/carts'); // Replace URL
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setCarts(data);
-                setFilteredCarts(data); // Initialize filtered carts with all carts
-            } catch (error) {
-                console.error('Error fetching carts:', error);
+    
+    const handleSearch = async () => {
+        try {
+            const response = await fetch("http://localhost:8080/api/carts/" + searchTerm);
+            if (!response.ok) {
+                throw new Error('Order not found');
             }
-        };
-
-        fetchCarts();
-    }, []);
-
-    // Handle search functionality
-    const handleSearch = () => {
-        const lowerCaseSearchTerm = searchTerm.toLowerCase();
-        const filtered = carts.filter((cart) =>
-            cart.customerId?.toLowerCase().includes(lowerCaseSearchTerm) ||
-            cart.customerName?.toLowerCase().includes(lowerCaseSearchTerm)
-        );
-        setFilteredCarts(filtered);
+            const data = await response.json();
+            setFilteredCarts([data]);
+console.log([data]);
+            setCartId(data.id);
+            setTotalItem(data.customerId);
+            setCustomerId(data.totalItem);
+            setTotalPrice(data.totalPrice);
+            setEditingIndex(data.id); // Set index for editing
+        } catch (error) {
+            alert(error.message);
+            setEditingIndex(null);
+        }
     };
 
     const paperStyle = {
@@ -106,11 +101,10 @@ export default function ViewCarts() {
                                             width: '100%',
                                         }}
                                     >
-                                        <strong>ID: {cart.cartId}</strong><br />
-                                        <strong>Total Items: {cart.totalItems}</strong><br />
+                                        <strong>ID: {cart.id}</strong><br />
+                                        <strong>Total Items: {cart.totalItem}</strong><br />
                                         Total Price: {cart.totalPrice}<br />
                                         <strong>Customer ID: {cart.customerId}</strong><br />
-                                        Customer Name: {cart.customerName}
                                     </Box>
                                 </ListItem>
                             ))

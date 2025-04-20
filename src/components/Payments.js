@@ -6,6 +6,7 @@ export default function Payments() {
     const [paymentMethod, setPaymentMethod] = useState('');
     const [amount, setAmount] = useState('');
     const [paymentDate, setPaymentDate] = useState('');
+    const [orderId, setOrderId] = useState('')
     const [payments, setPayments] = useState([]);
 
     // Automatically set the current date as the default payment date
@@ -14,20 +15,51 @@ export default function Payments() {
         setPaymentDate(now.toISOString().split('T')[0]); // Set default payment date
     }, []);
 
-    const handleAddPayment = () => {
-        const newPayment = {
-            paymentId,
-            paymentMethod,
-            amount,
-            paymentDate,
+    const handleAddPayment = async () => {
+        const newPayment = { 
+            id: paymentId,
+            paymentMethod: paymentMethod,
+            amount: amount,
+            paymentDate: paymentDate,
+            orderId: orderId,
         };
         setPayments([...payments, newPayment]);
-        // Clear inputs
-        setPaymentId('');
-        setPaymentMethod('');
-        setAmount('');
-        setPaymentDate(''); // Reset the field (default value will be re-applied by useEffect)
-    };
+
+        try {
+            const params = new URLSearchParams({
+                id: paymentId,
+                paymentMethod: paymentMethod,
+                amount: amount,
+                paymentDate: paymentDate,
+                orderId: orderId,
+              }).toString();
+
+            // Replace this URL with your backend API endpoint
+            const response = await fetch('http://localhost:8080/api/payments?' + params, 
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newPayment),
+            });
+
+            if (response.ok) {
+                alert('Payment added successfully!');
+                // Clear inputs
+                setPaymentId('');
+                setPaymentMethod('');
+                setAmount('');
+                setPaymentDate('');
+                setOrderId('');
+            } else {
+                alert('Failed to add payment. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error adding payment:', error);
+            alert('An error occurred while adding the Payment');
+        }
+    };
 
     const paperStyle = {
         padding: '40px 60px',
@@ -120,6 +152,13 @@ export default function Payments() {
                         onChange={(e) => setAmount(e.target.value)}
                         variant="outlined"
                     />
+                    <TextField
+                        id="order-id"
+                        label="Order ID"
+                        value={orderId}
+                        onChange={(e) => setOrderId(e.target.value)}
+                        variant="outlined"
+                    />
                     <Button
                         variant="contained"
                         color="primary"
@@ -130,29 +169,6 @@ export default function Payments() {
                     </Button>
                 </Box>
             </Paper>
-
-            <Box sx={{ marginTop: '20px', width: '80%' }}>
-                <h2 style={{ textAlign: 'center', color: 'white' }}>Payment List</h2>
-                <List>
-                    {payments.map((payment, index) => (
-                        <ListItem key={index}>
-                            <Box
-                                sx={{
-                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                                    padding: '10px',
-                                    borderRadius: '5px',
-                                    width: '100%',
-                                }}
-                            >
-                                <strong>ID: {payment.paymentId}</strong><br />
-                                <strong>Method: {payment.paymentMethod}</strong><br />
-                                Amount: {payment.amount}<br />
-                                Date: {payment.paymentDate}
-                            </Box>
-                        </ListItem>
-                    ))}
-                </List>
-            </Box>
         </Container>
     );
 }

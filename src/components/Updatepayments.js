@@ -6,46 +6,90 @@ export default function UpdatePayments() {
     const [paymentMethod, setPaymentMethod] = useState('');
     const [amount, setAmount] = useState('');
     const [paymentDate, setPaymentDate] = useState('');
+    const [orderId, setOrderId] = useState('')
     const [payments, setPayments] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [editingIndex, setEditingIndex] = useState(null); // Track which payment is being edited
 
     // Handle adding/updating a payment
-    const handleAddOrUpdatePayment = () => {
+    const handleAddOrUpdatePayment = async () => {
         const newPayment = {
-            paymentId,
-            paymentMethod,
-            amount,
-            paymentDate,
+            id: paymentId,
+            paymentMethod: paymentMethod,
+            amount: amount,
+            paymentDate: paymentDate,
+            orderId: orderId,
         };
 
         if (editingIndex === null) {
-            setPayments([...payments, newPayment]); // Add new payment
+            setPayments([...payments, newPayment]);
         } else {
             const updatedPayments = [...payments];
-            updatedPayments[editingIndex] = newPayment; // Update existing payment
+            updatedPayments[editingIndex] = newPayment; // Update existing order
             setPayments(updatedPayments);
-            setEditingIndex(null); // Reset editing index
+            setEditingIndex(null);
         }
+
+        try {
+            const params = new URLSearchParams({
+                id: paymentId,
+                paymentMethod: paymentMethod,
+                amount: amount,
+                paymentDate: paymentDate,
+                orderId: orderId,
+          }).toString();
+
+            // Replace this URL with your backend API endpoint
+            const response = await fetch('http://localhost:8080/api/payments/' + paymentId + '?' + params, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newPayment),
+            });
+
+            if (response.ok) {
+                alert('Payment updated successfully!');
+                // Clear input fields
+                setPaymentId('');
+                setPaymentMethod('');
+                setAmount('');
+                setPaymentDate('');
+                setOrderId('');
+            } else {
+                alert('Failed to add payment. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error updating payment:', error);
+            alert('An error occurred while updating the payment.');
+        }
 
         // Clear input fields
         setPaymentId('');
         setPaymentMethod('');
         setAmount('');
         setPaymentDate('');
+        setOrderId('');
+        setEditingIndex(null);
     };
 
     // Handle searching for a payment by ID
-    const handleSearch = () => {
-        const index = payments.findIndex((payment) => payment.paymentId === searchTerm);
-        if (index !== -1) {
-            setPaymentId(payments[index].paymentId);
-            setPaymentMethod(payments[index].paymentMethod);
-            setAmount(payments[index].amount);
-            setPaymentDate(payments[index].paymentDate);
-            setEditingIndex(index); // Set index for editing
-        } else {
-            alert('Payment not found');
+    const handleSearch = async () => {
+        try {
+            const response = await fetch("http://localhost:8080/api/payments/" + searchTerm);
+            if (!response.ok) {
+                throw new Error('Order not found');
+            }
+            const data = await response.json();
+
+            setPaymentId(data.id);
+            setPaymentMethod(data.paymentMethod);
+            setAmount(data.amount);
+            setPaymentDate(data.paymentDate);
+            setOrderId(data.orderId);
+            setEditingIndex(data.id); // Set index for editing
+        } catch (error) {
+            alert(error.message);
             setEditingIndex(null);
         }
     };
@@ -146,6 +190,13 @@ export default function UpdatePayments() {
                         }}
                         variant="outlined"
                     />
+                    <TextField
+                        id="order-id"
+                        label="Order ID"
+                        value={orderId}
+                        onChange={(e) => setOrderId(e.target.value)}
+                        variant="outlined"
+                    />
                     <Button
                         variant="contained"
                         color="primary"
@@ -156,28 +207,6 @@ export default function UpdatePayments() {
                     </Button>
                 </Box>
             </Paper>
-            <Box sx={{ marginTop: '20px', width: '80%' }}>
-                <h2 style={{ textAlign: 'center', color: 'white' }}>Payment List</h2>
-                <List>
-                    {payments.map((payment, index) => (
-                        <ListItem key={index}>
-                            <Box
-                                sx={{
-                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                                    padding: '10px',
-                                    borderRadius: '5px',
-                                    width: '100%',
-                                }}
-                            >
-                                <strong>ID: {payment.paymentId}</strong><br />
-                                <strong>Method: {payment.paymentMethod}</strong><br />
-                                Amount: {payment.amount}<br />
-                                Date: {payment.paymentDate}
-                            </Box>
-                        </ListItem>
-                    ))}
-                </List>
-            </Box>
         </Container>
     );
 }
