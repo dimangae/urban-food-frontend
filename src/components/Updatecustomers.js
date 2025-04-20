@@ -1,0 +1,404 @@
+/*import React, { useState } from 'react';
+import { Container, Paper, Box, TextField, Button, List, ListItem } from '@mui/material';
+
+export default function Updatecustomers1() {
+    const [customerName, setCustomerName] = useState('');
+    const [address, setAddress] = useState('');
+    const [email, setEmail] = useState('');
+    const [contact, setContact] = useState('');
+    const [customers, setCustomers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [editingIndex, setEditingIndex] = useState(null); // Track which customer is being edited
+
+    // Generate unique Customer ID
+    const generateCustomerId = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Handle adding/updating a customer
+    const handleAddOrUpdateCustomer = () => {
+        const newCustomer = {
+            customerId: editingIndex === null ? generateCustomerId() : customers[editingIndex].customerId, // Keep the same ID when editing
+            customerName,
+            address,
+            email,
+            contact,
+        };
+
+        if (editingIndex === null) {
+            setCustomers([...customers, newCustomer]); // Add new customer
+        } else {
+            const updatedCustomers = [...customers];
+            updatedCustomers[editingIndex] = newCustomer; // Update existing customer
+            setCustomers(updatedCustomers);
+            setEditingIndex(null); // Reset editing index
+        }
+
+        // Clear input fields
+        setCustomerName('');
+        setAddress('');
+        setEmail('');
+        setContact('');
+    };
+
+    // Handle searching for a customer by ID
+    const handleSearch = () => {
+        const index = customers.findIndex((customer) => customer.customerId === searchTerm);
+        if (index !== -1) {
+            setCustomerName(customers[index].customerName);
+            setAddress(customers[index].address);
+            setEmail(customers[index].email);
+            setContact(customers[index].contact);
+            setEditingIndex(index); // Set index for editing
+        } else {
+            alert('Customer not found');
+            setEditingIndex(null);
+        }
+    };
+
+    const paperStyle = {
+        padding: '40px 60px',
+        width: '80%',
+        maxWidth: 500,
+        margin: 'auto',
+        textAlign: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderRadius: '10px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    };
+
+    const containerStyle = {
+        minHeight: '100vh',
+        minWidth: '99vw',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundImage: "url('/images/polyphenol-foods-feature.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        margin: 0,
+        padding: 0,
+        overflow: 'hidden',
+    };
+
+    return (
+        <Container style={containerStyle}>
+            <Paper elevation={3} style={paperStyle}>
+                <h1 style={{ color: "black", textAlign: "center" }}>UPDATE CUSTOMERS</h1>
+                <Box
+                    component="form"
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        '& > :not(style)': { m: 1, width: '80%' },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                >
+                    <TextField
+                        id="search-customer"
+                        label="Search Customer by ID"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        variant="outlined"
+                        sx={{ marginBottom: '20px' }}
+                    />
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        style={{ marginBottom: '20px', width: '30%' }}
+                        onClick={handleSearch}
+                    >
+                        Search
+                    </Button>
+                    <TextField
+                        id="customer-name"
+                        label="Customer Name"
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                        variant="outlined"
+                    />
+                    <TextField
+                        id="address"
+                        label="Address"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        variant="outlined"
+                    />
+                    <TextField
+                        id="email"
+                        label="E-mail"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        variant="outlined"
+                    />
+                    <TextField
+                        id="contact"
+                        label="Contact"
+                        value={contact}
+                        onChange={(e) => setContact(e.target.value)}
+                        variant="outlined"
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginTop: '20px', width: '20%' }}
+                        onClick={handleAddOrUpdateCustomer}
+                    >
+                        {editingIndex === null ? 'Add' : 'Update'}
+                    </Button>
+                </Box>
+            </Paper>
+            <Box sx={{ marginTop: '20px', width: '80%' }}>
+                <h2 style={{ textAlign: 'center', color: 'white' }}>Customer List</h2>
+                <List>
+                    {customers.map((customer, index) => (
+                        <ListItem key={index}>
+                            <Box
+                                sx={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                    padding: '10px',
+                                    borderRadius: '5px',
+                                    width: '100%',
+                                }}
+                            >
+                                <strong>ID: {customer.customerId}</strong><br />
+                                <strong>Name: {customer.customerName}</strong><br />
+                                Address: {customer.address}<br />
+                                E-mail: {customer.email}<br />
+                                Contact: {customer.contact}
+                            </Box>
+                        </ListItem>
+                    ))}
+                </List>
+            </Box>
+        </Container>
+    );
+}*/
+
+import React, { useState } from 'react';
+import { Container, Paper, Box, TextField, Button, List, ListItem } from '@mui/material';
+
+export default function Updatecustomers1() {
+    const [customerId, setCustomerId] = useState(''); // Manually handle Customer ID
+    const [customerName, setCustomerName] = useState('');
+    const [address, setAddress] = useState('');
+    const [email, setEmail] = useState('');
+    const [contact, setContact] = useState('');
+    const [customers, setCustomers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [editingIndex, setEditingIndex] = useState(null); // Track which customer is being edited
+
+    // Handle adding/updating a customer
+    const handleAddOrUpdateCustomer = async () => {
+        const newCustomer = {
+            customerId, // Use manually entered or externally provided Customer ID
+            customerName,
+            address,
+            email,
+            contact,
+        };
+
+        if (editingIndex === null) {
+            setCustomers([...customers, newCustomer]); // Add new customer
+        } else {
+            const updatedCustomers = [...customers];
+            updatedCustomers[editingIndex] = newCustomer; // Update existing customer
+            setCustomers(updatedCustomers);
+            setEditingIndex(null); // Reset editing index
+        }
+
+        try {
+            const params = new URLSearchParams({
+                name: customerName,
+                address: address, 
+                email: email,
+                contact: contact,
+          }).toString();
+
+            // Replace this URL with your backend API endpoint
+            const response = await fetch('http://localhost:8080/api/customers/'+customerId+'?' + params, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newCustomer),
+            });
+
+            if (response.ok) {
+                const updatedCustomer = await response.json();
+                setCustomers([...customers, updatedCustomer]); // Add the new customer to the list
+                alert('Customer updated successfully!');
+                // Clear inputs
+                setCustomerId('');
+                setCustomerName('');
+                setAddress('');
+                setEmail('');
+                setContact('');
+            } else {
+                alert('Failed to update customer. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error updating customer:', error);
+            alert('An error occurred while updating the customer.');
+        }
+
+        // Clear input fields
+        setCustomerId('');
+        setCustomerName('');
+        setAddress('');
+        setEmail('');
+        setContact('');
+    };
+
+    // Handle searching for a customer by ID
+    const handleSearch = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/customers/`+searchTerm);
+            if (!response.ok) {
+                throw new Error('Customer not found');
+            }
+            const data = await response.json();
+            setCustomerId(data.id);
+            setCustomerName(data.name);
+            setAddress(data.address);
+            setEmail(data.email);
+            setContact(data.contact);
+            setEditingIndex(data.id); // Set index for editing
+        } catch (error) {
+            alert(error.message);
+            setEditingIndex(null);
+        }
+    };
+
+    const paperStyle = {
+        padding: '40px 60px',
+        width: '80%',
+        maxWidth: 500,
+        margin: 'auto',
+        textAlign: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderRadius: '10px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    };
+
+    const containerStyle = {
+        minHeight: '100vh',
+        minWidth: '99vw',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundImage: "url('/images/polyphenol-foods-feature.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        margin: 0,
+        padding: 0,
+        overflow: 'hidden',
+    };
+
+    return (
+        <Container style={containerStyle}>
+            <Paper elevation={3} style={paperStyle}>
+                <h1 style={{ color: "black", textAlign: "center" }}>UPDATE CUSTOMERS</h1>
+                <Box
+                    component="form"
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        '& > :not(style)': { m: 1, width: '80%' },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                >
+                    <TextField
+                        id="search-customer"
+                        label="Search Customer by ID"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        variant="outlined"
+                        sx={{ marginBottom: '20px' }}
+                    />
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        style={{ marginBottom: '20px', width: '30%' }}
+                        onClick={handleSearch}
+                    >
+                        Search
+                    </Button>
+                    <TextField
+                        id="customer-id"
+                        label="Customer ID"
+                        value={customerId}
+                        onChange={(e) => setCustomerId(e.target.value)}
+                        variant="outlined"
+                    />
+                    <TextField
+                        id="customer-name"
+                        label="Customer Name"
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                        variant="outlined"
+                    />
+                    <TextField
+                        id="address"
+                        label="Address"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        variant="outlined"
+                    />
+                    <TextField
+                        id="email"
+                        label="E-mail"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        variant="outlined"
+                    />
+                    <TextField
+                        id="contact"
+                        label="Contact"
+                        value={contact}
+                        onChange={(e) => setContact(e.target.value)}
+                        variant="outlined"
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginTop: '20px', width: '20%' }}
+                        onClick={handleAddOrUpdateCustomer}
+                    >
+                        {editingIndex === null ? 'Add' : 'Update'}
+                    </Button>
+                </Box>
+            </Paper>
+            <Box sx={{ marginTop: '20px', width: '80%' }}>
+                <h2 style={{ textAlign: 'center', color: 'white' }}>Customer List</h2>
+                <List>
+                    {customers.map((customer, index) => (
+                        <ListItem key={index}>
+                            <Box
+                                sx={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                    padding: '10px',
+                                    borderRadius: '5px',
+                                    width: '100%',
+                                }}
+                            >
+                                <strong>ID: {customer.customerId}</strong><br />
+                                <strong>Name: {customer.customerName}</strong><br />
+                                Address: {customer.address}<br />
+                                E-mail: {customer.email}<br />
+                                Contact: {customer.contact}
+                            </Box>
+                        </ListItem>
+                    ))}
+                </List>
+            </Box>
+        </Container>
+    );
+}
+
