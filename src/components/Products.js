@@ -98,6 +98,7 @@ export default function Products1() {
     const [description, setDescription] = useState('');
     const [stock, setStock] = useState('');
     const [price, setPrice] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
     const [products, setProducts] = useState([]);
 
     const handleAddProduct = async () => {
@@ -109,6 +110,7 @@ export default function Products1() {
             description: description,
             price: price,
             stock_quantity: stock,
+            image_url: imageUrl,
         };
         setProducts([...products, newProduct]);
 
@@ -121,6 +123,7 @@ export default function Products1() {
                 description: description,
                 price: price,
                 stockQuantity: stock,
+                imageUrl: imageUrl,
               }).toString();
 
             // Replace this URL with your backend API endpoint
@@ -143,6 +146,7 @@ export default function Products1() {
                 setStock('');
                 setPrice('');
                 setDescription('');
+                setImageUrl('');
             } else {
                 alert('Failed to add product. Please try again.');
             }
@@ -248,6 +252,13 @@ export default function Products1() {
                         label="Price" 
                         value={price}
                         onChange={(e) => setPrice(e.target.value)} 
+                        variant="outlined" 
+                    />
+                    <TextField 
+                        id="imageUrl" 
+                        label="Image URL" 
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)} 
                         variant="outlined" 
                     />
 

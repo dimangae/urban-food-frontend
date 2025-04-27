@@ -1,10 +1,27 @@
 import React, { useState } from 'react';
 import { Container, Paper, Box, TextField, Button, List, ListItem } from '@mui/material';
 
-export default function DeleteOrders() {
+export default function ViewOrders() {
     const [orders, setOrders] = useState([]); // No initial sample data
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResult, setSearchResult] = useState(null);
+
+    React.useEffect(() => {
+        fetch('http://localhost:8080/api/orders')
+            .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            return response.json();
+            })
+            .then(data => {
+            console.log(data)
+            setOrders(data);
+            })
+            .catch(error => {
+            console.error('Error fetching fruits:', error);
+           });
+          }, []);
 
     // Handle searching for an order by ID
     const handleSearch = async () => {
@@ -71,7 +88,7 @@ export default function DeleteOrders() {
     return (
         <Container style={containerStyle}>
             <Paper elevation={3} style={paperStyle}>
-                <h1 style={{ color: "black", textAlign: "center" }}>DELETE ORDER</h1>
+                <h1 style={{ color: "black", textAlign: "center" }}>VIEW ORDERS</h1>
                 <Box
                     component="form"
                     sx={{
@@ -128,6 +145,30 @@ export default function DeleteOrders() {
                     )}
                 </Box>
             </Paper>
+
+            <Box sx={{ marginTop: '20px', width: '80%' }}>
+                <h2 style={{ textAlign: 'center', color: 'white' }}>Order List</h2>
+                <List>
+                    {orders.map((order, index) => (
+                        <ListItem key={index}>
+                            <Box
+                                sx={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                    padding: '10px',
+                                    borderRadius: '5px',
+                                    width: '100%',
+                                }}
+                            >
+                                <strong>ID: {order.id}</strong><br />
+                                <strong>customerId: {order.customerId}</strong><br />
+                                Shipping Address: {order.shippingAddress}<br />
+                                Total Amount: {order.totalAmount}<br />
+                                Order Date: {order.orderDate}
+                            </Box>
+                        </ListItem>
+                    ))}
+                </List>
+            </Box>
         </Container>
     );
 }

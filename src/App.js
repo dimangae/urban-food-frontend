@@ -12,8 +12,7 @@ import Suppliers from './components/Suppliers';
 import Updatecustomers from './components/Updatecustomers';
 import Deletecustomers from './components/Deletecustomers';
 import Orders from './components/Orders';
-import Updateorders from './components/Updateorders';
-import Deleteorders from './components/Deleteorders';
+import Vieworders from './components/Vieworders';
 import Deldrivers from './components/Deldrivers';
 import Deletedeldrivers from './components/Deletedeldrivers';
 import Updatedeldrivers from './components/Updatedeldrivers';
@@ -32,6 +31,7 @@ import Ordersdash  from './components/Ordersdash';
 import Paymentsdash from './components/Paymentsdash';
 import Reviewsdash from './components/Reviewsdash';
 import Cartsdash from './components/Cartsdash';
+import Login from './components/Login';
 
 
 
@@ -78,13 +78,13 @@ function App() {
         <Route path="/Updatedeldrivers" element={<Updatedeldrivers />} />
         <Route path="/Deletedeldrivers" element={<Deletedeldrivers />} />
         <Route path="/Orders" element={<Orders />} />
-        <Route path="/Updateorders" element={<Updateorders />} />
-        <Route path="/Deleteorders" element={<Deleteorders />} />
+        <Route path="/Vieworders" element={<Vieworders />} />
         <Route path="/Payments" element={<Payments />} />
         <Route path="/Updatepayments" element={<Updatepayments />} />
         <Route path="/Deletepayments" element={<Deletepayments />} />
         <Route path="/Reviews" element={<Reviews />} />
         <Route path="/Deletereviews" element={<Deletereviews />} />
+        <Route path="/Login" element={<Login />} />
       </Routes>
     </Router>
   );

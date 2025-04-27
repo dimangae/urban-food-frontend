@@ -142,7 +142,7 @@ export default function Payments() {
                             variant="outlined"
                         >
                             <MenuItem value="Cash">Cash</MenuItem>
-                            <MenuItem value="Credit Card/Debit Card">Credit Card/Debit Card</MenuItem>
+                            <MenuItem value="Credit Card/Debit Card" disabled>Credit Card/Debit Card</MenuItem>
                         </Select>
                     </FormControl>
                     <TextField

@@ -9,7 +9,25 @@ export default function UpdateOrders() {
     const [orderDate, setOrderDate] = useState('');
     const [orders, setOrders] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [searchResult, setSearchResult] = useState(null);
     const [editingIndex, setEditingIndex] = useState(null); // Track which order is being edited
+
+    React.useEffect(() => {
+        fetch('http://localhost:8080/api/orders')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Failed to fetch products');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(data)
+            setOrders(data);
+          })
+          .catch(error => {
+            console.error('Error fetching fruits:', error);
+          });
+        }, []);
 
     // Handle adding/updating an order
     const handleAddOrUpdateOrder = async () => {
@@ -79,6 +97,7 @@ export default function UpdateOrders() {
                 throw new Error('Order not found');
             }
             const data = await response.json();
+            setSearchResult(data);
 
             setOrderId(data.id);
             setShippingAddress(data.shippingAddress);
@@ -122,7 +141,7 @@ export default function UpdateOrders() {
     return (
         <Container style={containerStyle}>
             <Paper elevation={3} style={paperStyle}>
-                <h1 style={{ color: "black", textAlign: "center" }}>UPDATE ORDERS</h1>
+                <h1 style={{ color: "black", textAlign: "center" }}>VIEW ORDERS</h1>
                 <Box
                     component="form"
                     sx={{
@@ -150,55 +169,49 @@ export default function UpdateOrders() {
                     >
                         Search
                     </Button>
-                    <TextField
-                        id="order-id"
-                        label="Order ID"
-                        value={orderId}
-                        onChange={(e) => setOrderId(e.target.value)}
-                        variant="outlined"
-                    />
-                    <TextField
-                        id="shipping-address"
-                        label="Shipping Address"
-                        value={shippingAddress}
-                        onChange={(e) => setShippingAddress(e.target.value)}
-                        variant="outlined"
-                    />
-                    <TextField
-                        id="customerId"
-                        label="Customer Id"
-                        value={customerId}
-                        onChange={(e) => setCustomerId(e.target.value)}
-                        variant="outlined"
-                    />
-                    <TextField
-                        id="totalAmount"
-                        label="Total Amount"
-                        value={totalAmount}
-                        onChange={(e) => setTotalAmount(e.target.value)}
-                        variant="outlined"
-                    />
-                    <TextField
-                        id="order-date"
-                        label="Order Date"
-                        type="date"
-                        value={orderDate}
-                        onChange={(e) => setOrderDate(e.target.value)}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="outlined"
-                    />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        style={{ marginTop: '20px', width: '20%' }}
-                        onClick={handleAddOrUpdateOrder}
-                    >
-                        {editingIndex === null ? 'Add' : 'Update'}
-                    </Button>
+                    {searchResult && (
+                        <Box
+                            sx={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                width: '100%',
+                                marginBottom: '20px',
+                            }}
+                        >
+                            <strong>ID: {searchResult.id}</strong><br />
+                            <strong>Customer Id: {searchResult.customerId}</strong><br />
+                            Order Date: {searchResult.orderDate}<br />
+                            shippingAddress: {searchResult.shippingAddress}<br />
+                            Total Amount: {searchResult.totalAmount}
+                        </Box>
+                    )}
                 </Box>
             </Paper>
+
+            <Box sx={{ marginTop: '20px', width: '80%' }}>
+                <h2 style={{ textAlign: 'center', color: 'white' }}>Order List</h2>
+                <List>
+                    {orders.map((order, index) => (
+                        <ListItem key={index}>
+                            <Box
+                                sx={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                    padding: '10px',
+                                    borderRadius: '5px',
+                                    width: '100%',
+                                }}
+                            >
+                                <strong>ID: {order.id}</strong><br />
+                                <strong>customerId: {order.customerId}</strong><br />
+                                Shipping Address: {order.shippingAddress}<br />
+                                Total Amount: {order.totalAmount}<br />
+                                Order Date: {order.orderDate}
+                            </Box>
+                        </ListItem>
+                    ))}
+                </List>
+            </Box>
         </Container>
     );
 }

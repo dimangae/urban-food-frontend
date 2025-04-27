@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
 
 export default function AppBar1() {
   return (
@@ -24,7 +25,9 @@ export default function AppBar1() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Urban Food
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Link to="/Login" style={{ color: 'inherit' }} aria-label="login">
+            <Button color="inherit">Login</Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </Box>

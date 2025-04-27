@@ -53,25 +53,9 @@ export default function Ordersdash() {
                         variant="contained"
                         color="primary"
                         style={buttonStyle}
-                        onClick={() => navigate('/Orders')}
+                        onClick={() => navigate('/Vieworders')}
                     >
-                        Add Order
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        style={buttonStyle}
-                        onClick={() => navigate('/Updateorders')}
-                    >
-                        Update Order
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        style={buttonStyle}
-                        onClick={() => navigate('/Deleteorders')}
-                    >
-                        Delete Order
+                        View Orders
                     </Button>
                 </Box>
             </Paper>

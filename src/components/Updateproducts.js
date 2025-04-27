@@ -202,6 +202,7 @@ export default function Products1() {
     const [price, setPrice] = useState('');
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
     const [editingIndex, setEditingIndex] = useState(null); // To track which product is being edited
 
     // Handle adding/updating a product
@@ -214,6 +215,7 @@ export default function Products1() {
             description: description,
             price: price,
             stock_quantity: stock,
+            image_url: imageUrl,
         };
 
         if (editingIndex === null) {
@@ -233,6 +235,7 @@ export default function Products1() {
                 description: description,
                 price: price,
                 stockQuantity: stock,
+                imageUrl: imageUrl,
           }).toString();
 
             // Replace this URL with your backend API endpoint
@@ -254,6 +257,7 @@ export default function Products1() {
                 setStock('');
                 setPrice('');
                 setDescription('');
+                setImageUrl('');
             } else {
                 alert('Failed to update product. Please try again.');
             }
@@ -270,6 +274,7 @@ export default function Products1() {
         setStock('');
         setPrice('');
         setDescription('');
+        setImageUrl('');
     };
 
     // Handle searching for a product by ID
@@ -288,6 +293,7 @@ export default function Products1() {
             setStock(data.stockQuantity);
             setPrice(data.price);
             setDescription(data.description);
+            setImageUrl(data.imageUrl);
             setEditingIndex(data.id); // Set index for editing
         } catch (error) {
             alert(error.message);
@@ -410,6 +416,13 @@ export default function Products1() {
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
                         variant="outlined"
+                    />
+                    <TextField 
+                        id="imageUrl" 
+                        label="Image URL" 
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)} 
+                        variant="outlined" 
                     />
                     <Button
                         variant="contained"

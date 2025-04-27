@@ -57,14 +57,6 @@ export default function Reviewsdash() {
                     >
                         View Review
                     </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        style={buttonStyle}
-                        onClick={() => navigate('/Deletereviews')}
-                    >
-                        Delete Review
-                    </Button>
                 </Box>
             </Paper>
         </Container>
